@@ -2,3 +2,7 @@ site_name: "MMClaw: Ultra-Lightweight, Pure Python Multimodal Agent"
 site_url: https://mmclaw.github.io
 theme:
   name: material
+extra:
+  analytics:
+    provider: google
+    property: G-NJ437GQMT7
