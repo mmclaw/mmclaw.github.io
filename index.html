@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMClaw — Ultra-Lightweight Python Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #f5f2eb;
+  --bg2:      #ede8df;
+  --surface:  #e6dfd3;
+  --border:   #d5ccba;
+  --border2:  #c4b89e;
+  --ink:      #1e1a14;
+  --ink2:     #5c4f3a;
+  --muted:    #9c8c74;
+  /* logo colors */
+  --red:      #8b1a1a;
+  --olive:    #5c5a24;
+  --olive-l:  #7a7830;
+  --accent-bg: rgba(139,26,26,0.07);
+  --mono: 'DM Mono', monospace;
+  --serif: 'DM Serif Display', serif;
+  --sans: 'DM Sans', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); overflow-x: hidden; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 200;
+  padding: 16px 52px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(245,242,235,0.93);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.logo-nav {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none;
+}
+.logo-nav .bolt { font-size: 1.1rem; line-height: 1; }
+.logo-nav span {
+  font-family: var(--mono); font-size: 0.95rem; font-weight: 500;
+  color: var(--red); letter-spacing: 0.04em;
+}
+.logo-nav span em { color: var(--olive); font-style: normal; }
+.nav-r { display: flex; align-items: center; gap: 26px; }
+.nav-r a { font-family: var(--mono); font-size: 0.7rem; color: var(--ink2); text-decoration: none; letter-spacing: 0.07em; text-transform: uppercase; transition: color 0.2s; }
+.nav-r a:hover { color: var(--ink); }
+.nav-gh {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
+  color: #fff !important; background: var(--red);
+  padding: 8px 16px; border-radius: 5px; text-decoration: none;
+  transition: background 0.2s, transform 0.15s !important;
+}
+.nav-gh:hover { background: #a82020; transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 100px 52px 72px; position: relative; overflow: hidden;
+}
+.paper-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(160,140,100,0.1) 31px, rgba(160,140,100,0.1) 32px);
+}
+.blob { position: absolute; border-radius: 50%; pointer-events: none; }
+.blob-1 { width: 700px; height: 700px; top: -200px; right: -150px; background: radial-gradient(circle, rgba(92,90,36,0.07) 0%, transparent 65%); }
+.blob-2 { width: 500px; height: 500px; bottom: -150px; left: -80px; background: radial-gradient(circle, rgba(139,26,26,0.05) 0%, transparent 65%); }
+
+.hero-inner {
+  max-width: 1080px; margin: 0 auto; width: 100%;
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 400px; gap: 72px; align-items: center;
+}
+
+/* THE BIG NAME */
+.hero-name {
+  font-family: var(--mono);
+  font-size: clamp(4rem, 9vw, 8.5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 0.15em;
+  opacity: 0; animation: up 0.6s 0.15s forwards;
+}
+.hero-name .bolt-icon { font-size: 0.75em; line-height: 1; }
+.hero-name .mm { color: var(--red); }
+.hero-name .claw { color: var(--olive); }
+
+.hero-tagline {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  color: var(--ink2);
+  line-height: 1.4;
+  margin-bottom: 28px;
+  font-style: italic;
+  opacity: 0; animation: up 0.6s 0.25s forwards;
+}
+
+.hero-sub {
+  font-size: 0.95rem; font-weight: 300; color: var(--ink2);
+  line-height: 1.8; max-width: 500px; margin-bottom: 28px;
+  opacity: 0; animation: up 0.6s 0.32s forwards;
+}
+.hero-sub strong { color: var(--ink); font-weight: 500; }
+
+/* BADGES */
+.badges {
+  display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 32px;
+  opacity: 0; animation: up 0.6s 0.4s forwards;
+}
+.badge {
+  font-family: var(--mono); font-size: 0.66rem;
+  padding: 5px 12px; border-radius: 99px;
+  border: 1px solid var(--border2); color: var(--ink2);
+  background: var(--bg); cursor: default;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.badge:hover { border-color: var(--red); color: var(--red); background: var(--accent-bg); }
+.badge.r { border-color: rgba(139,26,26,0.35); color: var(--red); background: var(--accent-bg); }
+.badge.o { border-color: rgba(92,90,36,0.35); color: var(--olive); background: rgba(92,90,36,0.07); }
+
+/* ACTIONS */
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; animation: up 0.6s 0.48s forwards; }
+.btn-red { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: #fff; background: var(--red); padding: 12px 26px; border-radius: 6px; text-decoration: none; letter-spacing: 0.03em; transition: background 0.2s, transform 0.15s; box-shadow: 0 2px 18px rgba(139,26,26,0.2); }
+.btn-red:hover { background: #a82020; transform: translateY(-2px); }
+.btn-ghost { font-family: var(--mono); font-size: 0.8rem; color: var(--ink2); padding: 12px 26px; border-radius: 6px; text-decoration: none; border: 1px solid var(--border2); letter-spacing: 0.03em; transition: color 0.2s, border-color 0.2s; }
+.btn-ghost:hover { color: var(--ink); border-color: var(--ink2); }
+
+/* INSTALL */
+.install-line {
+  display: flex; align-items: center; gap: 12px; margin-top: 20px;
+  opacity: 0; animation: up 0.6s 0.55s forwards;
+}
+.install-cmd {
+  font-family: var(--mono); font-size: 0.82rem;
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 10px 18px; border-radius: 5px; color: var(--olive);
+  display: flex; align-items: center; gap: 10px;
+}
+.install-cmd::before { content: '$'; color: var(--muted); }
+
+/* HERO RIGHT - terminal */
+.hero-right { opacity: 0; animation: up 0.7s 0.42s forwards; }
+.terminal {
+  background: #fffef9;
+  border: 1px solid var(--border2); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 8px 48px rgba(80,60,20,0.1), 0 1px 0 rgba(255,255,255,0.9) inset;
+}
+.term-bar {
+  background: var(--surface); padding: 11px 16px;
+  display: flex; align-items: center; gap: 7px;
+  border-bottom: 1px solid var(--border);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dr{background:#ff5f57} .dy{background:#ffbd2e} .dg{background:#28ca41}
+.term-title { font-family: var(--mono); font-size: 0.64rem; color: var(--muted); margin-left: 6px; }
+.term-body { padding: 20px 20px 22px; font-family: var(--mono); font-size: 0.77rem; line-height: 2.1; background: #fffef9; }
+.tp{color:var(--muted)} .tc{color:var(--ink)} .to{color:var(--ink2);font-size:.71rem}
+.ta{color:var(--olive)} .ta2{color:var(--red)}
+.tk{color:#7c3aab} .tf{color:#1d5fa8} .ts{color:#2d7a3a} .tcm{color:var(--muted);font-style:italic}
+.cursor { display:inline-block; width:7px; height:13px; background:var(--red); vertical-align:middle; animation:blink 1.2s infinite; border-radius:1px; }
+
+.stat-row { display:flex; gap:10px; margin-top:12px; }
+.stat-pill { font-family:var(--mono); font-size:0.65rem; color:var(--ink2); background:var(--surface); border:1px solid var(--border); padding:8px 10px; border-radius:5px; flex:1; text-align:center; line-height:1.4; }
+.stat-pill strong { display:block; font-size:1rem; color:var(--ink); margin-bottom:1px; }
+
+/* SECTIONS */
+.section { padding: 88px 52px; }
+.section-inner { max-width: 1080px; margin: 0 auto; }
+.sec-tag { font-family:var(--mono); font-size:0.64rem; color:var(--red); letter-spacing:0.16em; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.sec-tag::before { content:''; display:block; width:14px; height:1px; background:var(--red); }
+h2 { font-family:var(--serif); font-size:clamp(1.9rem,3.2vw,2.7rem); line-height:1.1; letter-spacing:-0.01em; margin-bottom:12px; }
+h2 em { color:var(--red); font-style:italic; }
+.sec-desc { font-size:0.9rem; font-weight:300; color:var(--ink2); line-height:1.8; max-width:500px; margin-bottom:44px; }
+
+/* FEATURES */
+.feat-section { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.feat-card { background:var(--bg); padding:30px 26px; position:relative; overflow:hidden; transition:background 0.2s; }
+.feat-card:hover { background:#fffef9; }
+.feat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--red),var(--olive)); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.feat-card:hover::before { transform:scaleX(1); }
+.feat-icon { font-size:1.35rem; margin-bottom:14px; }
+.feat-title { font-family:var(--serif); font-size:1.08rem; margin-bottom:8px; color:var(--ink); }
+.feat-text { font-size:0.8rem; font-weight:300; color:var(--ink2); line-height:1.75; }
+.feat-tag { display:inline-block; margin-top:12px; font-family:var(--mono); font-size:0.58rem; letter-spacing:0.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:var(--accent-bg); color:var(--red); border:1px solid rgba(139,26,26,0.2); }
+
+/* PROVIDERS */
+.prov-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; }
+.prov-chip { background:var(--bg); border:1px solid var(--border); padding:14px 16px; border-radius:6px; font-family:var(--mono); font-size:0.73rem; color:var(--ink2); display:flex; align-items:center; gap:9px; transition:all 0.2s; cursor:default; }
+.prov-chip:hover { border-color:var(--olive); color:var(--ink); }
+.pdot { width:5px; height:5px; border-radius:50%; background:var(--olive); flex-shrink:0; }
+
+/* CONNECTORS */
+.conn-section { background:var(--bg2); border-top:1px solid var(--border); }
+.conn-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+.conn-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:22px 22px 20px; display:flex; gap:16px; align-items:flex-start; transition:border-color 0.2s, box-shadow 0.2s; }
+.conn-card:hover { border-color:rgba(139,26,26,0.3); box-shadow:0 4px 20px rgba(139,26,26,0.06); }
+.conn-emoji { font-size:1.5rem; flex-shrink:0; line-height:1; margin-top:2px; }
+.conn-name { font-family:var(--serif); font-size:1rem; margin-bottom:5px; color:var(--ink); }
+.conn-desc { font-size:0.77rem; font-weight:300; color:var(--ink2); line-height:1.7; }
+.conn-tag { display:inline-block; margin-top:10px; font-family:var(--mono); font-size:0.58rem; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:var(--accent-bg); color:var(--red); border:1px solid rgba(139,26,26,0.2); }
+.conn-tag.blue { background:rgba(29,95,168,0.07); color:#1d5fa8; border-color:rgba(29,95,168,0.2); }
+
+/* QUICKSTART */
+.qs-layout { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+.cmd-stack { display:flex; flex-direction:column; gap:9px; margin-top:28px; }
+.cmd-line { font-family:var(--mono); font-size:0.8rem; background:var(--bg2); border:1px solid var(--border); padding:11px 16px; border-radius:5px; color:var(--olive); display:flex; align-items:center; gap:12px; }
+.cmd-line::before { content:'$'; color:var(--muted); }
+.cmt { color:var(--muted); font-size:0.68rem; margin-left:auto; }
+
+/* CTA */
+.cta-section { padding:110px 52px; text-align:center; position:relative; overflow:hidden; }
+.cta-section::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 50% 110%, rgba(139,26,26,0.08) 0%, transparent 70%); pointer-events:none; }
+.cta-name { font-family:var(--mono); font-size:clamp(3rem,7vw,6rem); font-weight:500; letter-spacing:-0.03em; line-height:1; margin-bottom:16px; position:relative; z-index:2; }
+.cta-name .mm { color:var(--red); } .cta-name .claw { color:var(--olive); }
+.cta-sub { font-family:var(--mono); font-size:0.82rem; color:var(--ink2); margin-bottom:34px; position:relative; z-index:2; }
+.cta-btns { display:flex; justify-content:center; gap:14px; position:relative; z-index:2; }
+
+/* FOOTER */
+footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; justify-content:space-between; align-items:center; background:var(--bg2); }
+.foot-l { font-family:var(--mono); font-size:0.68rem; color:var(--muted); }
+.foot-l a { color:var(--red); text-decoration:none; }
+.foot-links { display:flex; gap:22px; list-style:none; }
+.foot-links a { font-family:var(--mono); font-size:0.65rem; color:var(--muted); text-decoration:none; letter-spacing:0.07em; text-transform:uppercase; transition:color 0.2s; }
+.foot-links a:hover { color:var(--ink); }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(16px); transition:opacity 0.5s, transform 0.5s; }
+.reveal.on { opacity:1; transform:none; }
+
+@keyframes up { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+@keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+@media(max-width:900px){
+  nav{padding:14px 24px} .nav-r .hide{display:none}
+  .hero{padding:90px 24px 60px}
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-right{order:-1}
+  .section{padding:60px 24px}
+  .feat-grid{grid-template-columns:1fr}
+  .conn-grid{grid-template-columns:1fr}
+  .qs-layout{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:16px;text-align:center}
+  .cta-section{padding:80px 24px}
+}
+@media(max-width:600px){
+  .prov-grid{grid-template-columns:repeat(2,1fr)}
+  .cta-btns{flex-direction:column;align-items:center}
+  .stat-row{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo-nav">
+    <span class="bolt">⚡</span>
+    <span><span style="color:var(--red)">MM</span><em>CLAW</em></span>
+  </a>
+  <div class="nav-r">
+    <a href="#features" class="hide">Features</a>
+    <a href="#quickstart" class="hide">Quickstart</a>
+    <a href="https://github.com/CrawlScript/MMClaw/blob/main/README.md" target="_blank" class="hide">Docs</a>
+    <a href="https://github.com/CrawlScript/MMClaw" target="_blank" class="nav-gh">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <div class="paper-lines"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-name">
+        <span class="bolt-icon">⚡</span><span class="mm">MM</span><span class="claw">CLAW</span>
+      </div>
+
+      <div class="hero-tagline">The agent kernel built for clarity.</div>
+
+      <p class="hero-sub">
+        A <strong>1,700-line</strong>, pure Python autonomous agent — lightweight by design, not by accident. No Node.js, no Docker, no C-extensions. Just install and run.
+      </p>
+
+      <div class="badges">
+        <span class="badge r">🐍 Pure Python</span>
+        <span class="badge r">✈️ Telegram</span>
+        <span class="badge r">🪶 Feishu</span>
+        <span class="badge r">💬 WhatsApp</span>
+        <span class="badge r">🐧 QQ Bot</span>
+        <span class="badge o">OpenAI</span>
+        <span class="badge o">Gemini</span>
+        <span class="badge o">DeepSeek</span>
+        <span class="badge o">Kimi</span>
+        <span class="badge o">Ollama</span>
+        <span class="badge o">OpenRouter</span>
+        <span class="badge r">🪟 Win / 🍎 Mac / 🐧 Linux</span>
+      </div>
+
+      <div class="hero-actions">
+        <a href="https://github.com/CrawlScript/MMClaw" target="_blank" class="btn-red">View on GitHub →</a>
+        <a href="#quickstart" class="btn-ghost">Quick Start</a>
+      </div>
+
+      <div class="install-line">
+        <div class="install-cmd">pip install mmclaw</div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+          <span class="term-title">terminal</span>
+        </div>
+        <div class="term-body">
+<span class="tp">$ </span><span class="tc">pip install mmclaw</span><br>
+<span class="to"><span class="ta">✓</span> Installed</span><br><br>
+<span class="tp">$ </span><span class="tc">mmclaw run</span><br>
+<span class="to">Connector: <span class="ta2">Feishu</span></span><br>
+<span class="to">LLM: <span class="ta2">DeepSeek</span></span><br>
+<span class="to"><span class="ta">✓</span> Agent ready <span class="cursor"></span></span>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-pill"><strong>~1,700</strong>lines</div>
+        <div class="stat-pill"><strong>0</strong>C-exts</div>
+        <div class="stat-pill"><strong>Win / Mac<br>/ Linux</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section feat-section" id="features">
+  <div class="section-inner">
+    <div class="sec-tag reveal">Why MMClaw</div>
+    <h2 class="reveal">Lightweight, <em>not minimal.</em></h2>
+    <p class="sec-desc reveal">Full-featured enough to ship real agents. Small enough to read over lunch.</p>
+    <div class="feat-grid reveal">
+      <div class="feat-card">
+        <div class="feat-icon">🐍</div>
+        <div class="feat-title">Pure Python</div>
+        <div class="feat-text">Zero C-extensions, zero native binaries. If Python runs on your machine, MMClaw runs on your machine — laptop, server, or Raspberry Pi.</div>
+        <div class="feat-tag">No build steps</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">1,700 Lines</div>
+        <div class="feat-text">The entire kernel fits in a single reading session. Step through the agent loop in your debugger. No magic, no black boxes.</div>
+        <div class="feat-tag">Fully auditable</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔧</div>
+        <div class="feat-title">Kernel, Not App</div>
+        <div class="feat-text">A core engine built for extension. Swap providers, wire in custom tools, plug in your own state logic — in minutes, not hours.</div>
+        <div class="feat-tag">Extensible</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📡</div>
+        <div class="feat-title">5 Connectors</div>
+        <div class="feat-text">Terminal, Telegram, Feishu, WhatsApp, QQ Bot — mix and match, same codebase. Long-polling throughout; no public IP, no webhooks needed.</div>
+        <div class="feat-tag">Multi-connector</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧠</div>
+        <div class="feat-title">Any LLM</div>
+        <div class="feat-text">OpenAI, Gemini, DeepSeek, Kimi, Claude, OpenRouter, and any OpenAI-compatible endpoint. Switch with a single config line.</div>
+        <div class="feat-tag">Provider-agnostic</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📖</div>
+        <div class="feat-title">Living Tutorial</div>
+        <div class="feat-text">The codebase is a teaching artifact. Learn the full agent loop and tool-calling protocol by reading real, production-grade Python.</div>
+        <div class="feat-tag">Learn by reading</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVIDERS -->
+<section class="section" id="providers">
+  <div class="section-inner">
+    <div class="sec-tag reveal">LLM Support</div>
+    <h2 class="reveal">One kernel, <em>any brain.</em></h2>
+    <p class="sec-desc reveal">Switch providers with a single config change. No rewrites, no adapter layers.</p>
+    <div class="prov-grid reveal">
+      <div class="prov-chip"><span class="pdot"></span>OpenAI</div>
+      <div class="prov-chip"><span class="pdot"></span>OpenAI Codex</div>
+      <div class="prov-chip"><span class="pdot"></span>Google Gemini</div>
+      <div class="prov-chip"><span class="pdot"></span>DeepSeek</div>
+      <div class="prov-chip"><span class="pdot"></span>Kimi (Moonshot)</div>
+      <div class="prov-chip"><span class="pdot"></span>Anthropic Claude</div>
+      <div class="prov-chip"><span class="pdot"></span>OpenRouter</div>
+      <div class="prov-chip" style="border-style:dashed"><span class="pdot" style="background:var(--muted)"></span>Any OpenAI-Compatible</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECTORS -->
+<section class="section conn-section" id="connectors">
+  <div class="section-inner">
+    <div class="sec-tag reveal">Connectors</div>
+    <h2 class="reveal">Mix &amp; match <em>connectors.</em></h2>
+    <p class="sec-desc reveal">Use one or multiple connectors at once. Long-polling and direct connections only — no public IP, no webhooks, no infrastructure overhead.</p>
+    <div class="conn-grid reveal">
+      <div class="conn-card">
+        <div class="conn-emoji">⌨️</div>
+        <div>
+          <div class="conn-name">Terminal</div>
+          <div class="conn-desc">The default. An interactive CLI with zero setup — fastest path from install to working agent conversation.</div>
+          <div class="conn-tag">Default</div>
+        </div>
+      </div>
+      <div class="conn-card">
+        <div class="conn-emoji">✈️</div>
+        <div>
+          <div class="conn-name">Telegram</div>
+          <div class="conn-desc">Create a bot via @BotFather, add your token, done. A personal AI assistant on Telegram with no extra dependencies.</div>
+          <div class="conn-tag">Pure Python</div>
+        </div>
+      </div>
+      <div class="conn-card">
+        <div class="conn-emoji">🪶</div>
+        <div>
+          <div class="conn-name">Feishu / 飞书</div>
+          <div class="conn-desc">First-class Feishu support with a step-by-step guide. Long-connection polling — works behind any firewall, no public IP required.</div>
+          <div class="conn-tag">No Public IP</div>
+        </div>
+      </div>
+      <div class="conn-card">
+        <div class="conn-emoji">💬</div>
+        <div>
+          <div class="conn-name">WhatsApp</div>
+          <div class="conn-desc">A minimal Node.js bridge prints a QR code in your terminal. Scan it and your agent is live on WhatsApp in under a minute.</div>
+          <div class="conn-tag blue">Needs Node.js</div>
+        </div>
+      </div>
+      <div class="conn-card">
+        <div class="conn-emoji">🐧</div>
+        <div>
+          <div class="conn-name">QQ Bot</div>
+          <div class="conn-desc">Connect to China's most popular chat platform. Reach your users on QQ with the same agent kernel, zero extra configuration.</div>
+          <div class="conn-tag">Pure Python</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICKSTART -->
+<section class="section" id="quickstart">
+  <div class="section-inner">
+    <div class="qs-layout">
+      <div>
+        <div class="sec-tag reveal">Quick Start</div>
+        <h2 class="reveal">Zero to agent <em>in 60 seconds.</em></h2>
+        <p class="sec-desc reveal">Two commands. No runtimes, no images, no config files to hunt down. Just pip and run.</p>
+        <div class="cmd-stack reveal">
+          <div class="cmd-line">pip install mmclaw</div>
+          <div class="cmd-line">mmclaw run</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+            <span class="term-title">terminal</span>
+          </div>
+          <div class="term-body">
+<span class="tcm"># Step 1 — install</span><br>
+<span class="tp">$ </span><span class="tc">pip install mmclaw</span><br>
+<span class="to"><span class="ta">✓</span> Done</span><br><br>
+<span class="tcm"># Step 2 — run</span><br>
+<span class="tp">$ </span><span class="tc">mmclaw run</span><br>
+<span class="to">Connector: <span class="ta2">Terminal</span></span><br>
+<span class="to">LLM: <span class="ta2">OpenAI</span></span><br>
+<span class="to"><span class="ta">✓</span> Agent ready <span class="cursor"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-name"><span class="mm">MM</span><span class="claw">CLAW</span></div>
+  <p class="cta-sub">pip install mmclaw &nbsp;·&nbsp; then mmclaw run</p>
+  <div class="cta-btns">
+    <a href="https://github.com/CrawlScript/MMClaw" target="_blank" class="btn-red">View on GitHub →</a>
+    <a href="https://github.com/CrawlScript/MMClaw/blob/main/README.md" target="_blank" class="btn-ghost">Read the Docs</a>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-l">
+    <strong style="color:var(--ink2)">MMClaw</strong> &nbsp;·&nbsp; GPL-3.0 &nbsp;·&nbsp; Built with ❤️ for the Python community &nbsp;·&nbsp;
+    <a href="https://github.com/CrawlScript/MMClaw" target="_blank">github.com/CrawlScript/MMClaw</a>
+  </div>
+  <ul class="foot-links">
+    <li><a href="https://github.com/CrawlScript/MMClaw" target="_blank">GitHub</a></li>
+    <li><a href="https://github.com/CrawlScript/MMClaw/blob/main/README.md" target="_blank">Docs</a></li>
+    <li><a href="https://pypi.org/project/mmclaw/" target="_blank">PyPI</a></li>
+    <li><a href="https://github.com/CrawlScript/MMClaw/issues" target="_blank">Issues</a></li>
+  </ul>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);} });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelectorAll('.feat-grid .feat-card,.conn-grid .conn-card').forEach((el,i) => {
+  el.style.transitionDelay = i*50+'ms';
+});
+</script>
+</body>
+</html>
