@@ -211,7 +211,9 @@ h2 em { color:var(--red); font-style:italic; }
 
 /* CLAWMEETS */
 .clawmeets-section { background: var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-.clawmeets-inner { display:block; }
+.clawmeets-inner { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+.clawmeets-gif { align-self:center; }
+@media(max-width:900px){ .clawmeets-inner { grid-template-columns:1fr; } .clawmeets-gif { order:1; } }
 .clawmeets-badge { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:0.76rem; padding:6px 14px; border-radius:99px; background:rgba(92,90,36,0.1); border:1px solid rgba(92,90,36,0.3); color:var(--olive); margin-bottom:20px; }
 .clawmeets-features { display:flex; flex-direction:column; gap:14px; margin-top:28px; }
 .cm-feat { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:var(--bg2); border:1px solid var(--border); border-radius:7px; transition:border-color 0.2s; }
@@ -284,7 +286,7 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
   nav{padding:14px 24px} .nav-r .hide{display:none}
   .hero{padding:90px 24px 60px}
   .hero-inner{grid-template-columns:1fr;gap:40px}
-  .hero-right{order:-1}
+  .hero-right{}
   .section{padding:60px 24px}
   .feat-grid{grid-template-columns:1fr}
   .conn-grid{grid-template-columns:1fr}
@@ -384,6 +386,13 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
         <div class="stat-pill"><strong>6</strong>Connectors</div>
         <div class="stat-pill"><strong>Win / Mac<br>/ Linux</strong></div>
       </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:20px;">
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <div style="font-family:var(--mono);font-size:0.7rem;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;">🆕 New Feature</div>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+      </div>
+      <img src="https://raw.githubusercontent.com/CrawlScript/MMClaw/main/figs/MMClaw-WeChat.jpg" alt="MMClaw WeChat connector" style="width:100%;margin-top:10px;border-radius:8px;border:1px solid var(--border2);box-shadow:0 4px 20px rgba(80,60,20,0.08);">
+      <div style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);margin-top:7px;text-align:center;letter-spacing:0.05em;">WeChat (微信) connector — Pure Python, zero dependencies</div>
     </div>
   </div>
 </section>
@@ -453,18 +462,6 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
   </div>
 </section>
 
-<!-- WHATS NEW: WECHAT -->
-<section class="section" id="wechat-new" style="background:var(--bg);border-top:1px solid var(--border);">
-  <div class="section-inner">
-    <div class="sec-tag reveal">🆕 What's New</div>
-    <h2 class="reveal">WeChat connector — <em>Pure Python.</em></h2>
-    <p class="sec-desc reveal">Zero extra dependencies, zero webhooks. Run <code style="font-family:var(--mono);font-size:0.88em;background:var(--surface);padding:2px 7px;border-radius:3px">mmclaw config</code>, select WeChat mode, and scan the QR code. Your agent is live on WeChat instantly.</p>
-    <div class="reveal" style="max-width:480px;margin:0 auto;">
-      <img src="https://raw.githubusercontent.com/CrawlScript/MMClaw/main/figs/MMClaw-WeChat.jpg" alt="MMClaw WeChat connector screenshot" style="width:100%;border-radius:10px;border:1px solid var(--border2);box-shadow:0 8px 40px rgba(80,60,20,0.1);">
-    </div>
-  </div>
-</section>
-
 <!-- CLAWMEETS -->
 <section class="section clawmeets-section" id="clawmeets">
   <div class="section-inner">
@@ -495,9 +492,9 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
           <a href="https://clawmeets.com/" target="_blank" class="btn-ghost" style="display:inline-block">Visit clawmeets.com →</a>
         </div>
       </div>
-    </div>
-    <div class="reveal" style="margin-top:44px;">
-      <img src="https://raw.githubusercontent.com/CrawlScript/MMClaw/main/CLAWMEETS-INTRO.gif" alt="ClawMeets agent-to-agent messaging demo" style="width:100%;border-radius:10px;border:1px solid var(--border2);box-shadow:0 8px 40px rgba(80,60,20,0.1);">
+      <div class="clawmeets-gif">
+        <img src="https://raw.githubusercontent.com/CrawlScript/MMClaw/main/CLAWMEETS-INTRO.gif" alt="ClawMeets agent-to-agent messaging demo" style="width:100%;border-radius:10px;border:1px solid var(--border2);box-shadow:0 8px 40px rgba(80,60,20,0.1);">
+      </div>
     </div>
   </div>
 </section>
