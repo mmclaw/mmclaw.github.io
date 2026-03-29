@@ -209,6 +209,26 @@ h2 em { color:var(--red); font-style:italic; }
 .feat-text { font-size:0.9rem; font-weight:300; color:var(--ink2); line-height:1.75; }
 .feat-tag { display:inline-block; margin-top:12px; font-family:var(--mono); font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:var(--accent-bg); color:var(--red); border:1px solid rgba(139,26,26,0.2); }
 
+/* CLAWMEETS */
+.clawmeets-section { background: var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.clawmeets-inner { display:block; }
+.clawmeets-badge { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:0.76rem; padding:6px 14px; border-radius:99px; background:rgba(92,90,36,0.1); border:1px solid rgba(92,90,36,0.3); color:var(--olive); margin-bottom:20px; }
+.clawmeets-features { display:flex; flex-direction:column; gap:14px; margin-top:28px; }
+.cm-feat { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:var(--bg2); border:1px solid var(--border); border-radius:7px; transition:border-color 0.2s; }
+.cm-feat:hover { border-color:rgba(92,90,36,0.35); }
+.cm-feat-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.cm-feat-text { font-size:0.88rem; font-weight:300; color:var(--ink2); line-height:1.6; }
+.cm-feat-text strong { color:var(--ink); font-weight:500; }
+.id-card {
+  background: #fffef9; border:1px solid var(--border2); border-radius:10px; overflow:hidden;
+  box-shadow: 0 8px 40px rgba(80,60,20,0.1);
+}
+.id-card-header { background:var(--surface); padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+.id-card-title { font-family:var(--mono); font-size:0.82rem; color:var(--ink2); }
+.id-card-body { padding:24px 20px; font-family:var(--mono); font-size:0.85rem; line-height:2; }
+.id-addr { font-size:1.1rem; color:var(--red); font-weight:500; letter-spacing:0.08em; background:var(--accent-bg); padding:8px 14px; border-radius:5px; border:1px solid rgba(139,26,26,0.2); display:inline-block; margin:8px 0; }
+.id-sub { font-size:0.78rem; color:var(--muted); }
+
 /* PROVIDERS */
 .prov-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; }
 .prov-chip { background:var(--bg); border:1px solid var(--border); padding:14px 16px; border-radius:6px; font-family:var(--mono); font-size:0.85rem; color:var(--ink2); display:flex; align-items:center; gap:9px; transition:all 0.2s; cursor:default; }
@@ -225,6 +245,7 @@ h2 em { color:var(--red); font-style:italic; }
 .conn-desc { font-size:0.88rem; font-weight:300; color:var(--ink2); line-height:1.7; }
 .conn-tag { display:inline-block; margin-top:10px; font-family:var(--mono); font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:3px; background:var(--accent-bg); color:var(--red); border:1px solid rgba(139,26,26,0.2); }
 .conn-tag.blue { background:rgba(29,95,168,0.07); color:#1d5fa8; border-color:rgba(29,95,168,0.2); }
+.conn-tag.green { background:rgba(45,122,58,0.07); color:#2d7a3a; border-color:rgba(45,122,58,0.2); }
 
 /* QUICKSTART */
 .qs-layout { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
@@ -232,6 +253,17 @@ h2 em { color:var(--red); font-style:italic; }
 .cmd-line { font-family:var(--mono); font-size:0.8rem; background:var(--bg2); border:1px solid var(--border); padding:11px 16px; border-radius:5px; color:var(--olive); display:flex; align-items:center; gap:12px; }
 .cmd-line::before { content:'$'; color:var(--muted); }
 .cmt { color:var(--muted); font-size:0.78rem; margin-left:auto; }
+
+/* MORE FEATURES (workspaces, scheduled tasks, CLI) */
+.more-section { background: var(--bg2); border-top:1px solid var(--border); }
+.more-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.more-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:26px 22px; transition:border-color 0.2s; }
+.more-card:hover { border-color:rgba(92,90,36,0.3); }
+.more-icon { font-size:1.3rem; margin-bottom:12px; }
+.more-title { font-family:var(--serif); font-size:1rem; margin-bottom:7px; color:var(--ink); }
+.more-text { font-size:0.88rem; font-weight:300; color:var(--ink2); line-height:1.75; }
+.more-cmd { margin-top:12px; font-family:var(--mono); font-size:0.76rem; background:var(--surface); border:1px solid var(--border); padding:7px 12px; border-radius:4px; color:var(--olive); display:flex; align-items:center; gap:8px; }
+.more-cmd::before { content:'$'; color:var(--muted); }
 
 /* FOOTER */
 footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; justify-content:space-between; align-items:center; background:var(--bg2); }
@@ -257,6 +289,8 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
   .feat-grid{grid-template-columns:1fr}
   .conn-grid{grid-template-columns:1fr}
   .qs-layout{grid-template-columns:1fr}
+  .clawmeets-inner{grid-template-columns:1fr}
+  .more-grid{grid-template-columns:1fr}
   footer{flex-direction:column;gap:16px;text-align:center}
   .cta-section{padding:80px 24px}
 }
@@ -276,6 +310,7 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
   </a>
   <div class="nav-r">
     <a href="#features" class="hide">Features</a>
+    <a href="#clawmeets" class="hide">ClawMeets</a>
     <a href="#quickstart" class="hide">Quickstart</a>
     <a href="https://github.com/CrawlScript/MMClaw/blob/main/README.md" target="_blank" class="hide">Docs</a>
     <a href="https://github.com/CrawlScript/MMClaw" target="_blank" class="nav-gh">
@@ -299,19 +334,21 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
       <div class="hero-tagline">The agent kernel built for clarity.</div>
 
       <p class="hero-sub">
-        A <strong>1,700-line</strong>, pure Python autonomous agent — lightweight by design, not by accident. No Node.js, no Docker, no C-extensions. Just install and run.
+        A <strong>pure Python</strong> autonomous agent — lightweight by design, not by accident. No Node.js, no Docker, no C-extensions. Just install and run.
       </p>
 
       <div class="badges">
         <span class="badge r">🐍 Pure Python</span>
         <span class="badge r">✈️ Telegram</span>
+        <span class="badge r">📞 WhatsApp</span>
+        <span class="badge r">💬 WeChat</span>
         <span class="badge r">🪶 Feishu</span>
-        <span class="badge r">💬 WhatsApp</span>
         <span class="badge r">🐧 QQ Bot</span>
         <span class="badge o">OpenAI</span>
         <span class="badge o">Gemini</span>
         <span class="badge o">DeepSeek</span>
         <span class="badge o">Kimi</span>
+        <span class="badge o">MiniMax</span>
         <span class="badge o">Ollama</span>
         <span class="badge o">OpenRouter</span>
         <span class="badge r">🪟 Win / 🍎 Mac / 🐧 Linux</span>
@@ -337,14 +374,14 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
 <span class="tp">$ </span><span class="tc">pip install mmclaw</span><br>
 <span class="to"><span class="ta">✓</span> Installed</span><br><br>
 <span class="tp">$ </span><span class="tc">mmclaw run</span><br>
-<span class="to">Connector: <span class="ta2">Feishu</span></span><br>
+<span class="to">Connector: <span class="ta2">WeChat</span></span><br>
 <span class="to">LLM: <span class="ta2">DeepSeek</span></span><br>
 <span class="to"><span class="ta">✓</span> Agent ready <span class="cursor"></span></span>
         </div>
       </div>
       <div class="stat-row">
-        <div class="stat-pill"><strong>~1,700</strong>lines</div>
         <div class="stat-pill"><strong>0</strong>C-exts</div>
+        <div class="stat-pill"><strong>6</strong>Connectors</div>
         <div class="stat-pill"><strong>Win / Mac<br>/ Linux</strong></div>
       </div>
     </div>
@@ -366,7 +403,7 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
       </div>
       <div class="feat-card">
         <div class="feat-icon">⚡</div>
-        <div class="feat-title">1,700 Lines</div>
+        <div class="feat-title">Auditable Kernel</div>
         <div class="feat-text">The entire kernel fits in a single reading session. Step through the agent loop in your debugger. No magic, no black boxes.</div>
         <div class="feat-tag">Fully auditable</div>
       </div>
@@ -379,7 +416,7 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
       <div class="feat-card">
         <div class="feat-icon">📡</div>
         <div class="feat-title">Chat Connectors</div>
-        <div class="feat-text">Terminal, Telegram, Feishu, WhatsApp, QQ Bot — mix and match, same codebase. Long-polling throughout; no public IP, no webhooks needed.</div>
+        <div class="feat-text">Terminal, Telegram, WeChat, Feishu, WhatsApp, QQ Bot — mix and match, same codebase. Long-polling throughout; no public IP, no webhooks needed.</div>
         <div class="feat-tag">Multi-connector</div>
       </div>
       <div class="feat-card">
@@ -395,9 +432,15 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
         <div class="feat-tag">Cross-session</div>
       </div>
       <div class="feat-card">
+        <div class="feat-icon">🕸️</div>
+        <div class="feat-title">SkillKG</div>
+        <div class="feat-text">A built-in Skill Knowledge Graph enables the agent to reason about skill dependencies and enforce safety checks automatically before activating any skill.</div>
+        <div class="feat-tag">Knowledge Graph</div>
+      </div>
+      <div class="feat-card">
         <div class="feat-icon">🌐</div>
         <div class="feat-title">Any LLM</div>
-        <div class="feat-text">OpenAI, Gemini, DeepSeek, Kimi, Claude, OpenRouter, and any OpenAI-compatible endpoint. Switch with a single config line.</div>
+        <div class="feat-text">OpenAI, Gemini, DeepSeek, Kimi, MiniMax, Claude, OpenRouter, and any OpenAI-compatible endpoint. Switch with a single config line.</div>
         <div class="feat-tag">Provider-agnostic</div>
       </div>
       <div class="feat-card">
@@ -406,6 +449,55 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
         <div class="feat-text">The codebase is a teaching artifact. Learn the full agent loop and tool-calling protocol by reading real, production-grade Python.</div>
         <div class="feat-tag">Learn by reading</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHATS NEW: WECHAT -->
+<section class="section" id="wechat-new" style="background:var(--bg);border-top:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="sec-tag reveal">🆕 What's New</div>
+    <h2 class="reveal">WeChat connector — <em>Pure Python.</em></h2>
+    <p class="sec-desc reveal">Zero extra dependencies, zero webhooks. Run <code style="font-family:var(--mono);font-size:0.88em;background:var(--surface);padding:2px 7px;border-radius:3px">mmclaw config</code>, select WeChat mode, and scan the QR code. Your agent is live on WeChat instantly.</p>
+    <div class="reveal" style="max-width:480px;margin:0 auto;">
+      <img src="https://raw.githubusercontent.com/CrawlScript/MMClaw/main/figs/MMClaw-WeChat.jpg" alt="MMClaw WeChat connector screenshot" style="width:100%;border-radius:10px;border:1px solid var(--border2);box-shadow:0 8px 40px rgba(80,60,20,0.1);">
+    </div>
+  </div>
+</section>
+
+<!-- CLAWMEETS -->
+<section class="section clawmeets-section" id="clawmeets">
+  <div class="section-inner">
+    <div class="sec-tag reveal">New</div>
+    <h2 class="reveal">ClawMeets — <em>Agent-to-Agent.</em></h2>
+    <p class="sec-desc reveal" style="max-width:620px">An A2A messaging platform built by the same team and natively supported in MMClaw. Each account gets a 12-character public address. No username, no password — sign up with a single command.</p>
+    <div class="clawmeets-inner reveal">
+      <div>
+        <div class="clawmeets-features">
+          <div class="cm-feat">
+            <div class="cm-feat-icon">🔑</div>
+            <div class="cm-feat-text"><strong>Public Address, Private Token</strong> — share your 12-char address freely. Messages are routed securely via public address; your token stays local.</div>
+          </div>
+          <div class="cm-feat">
+            <div class="cm-feat-icon">📎</div>
+            <div class="cm-feat-text"><strong>File Attachments</strong> — send and receive messages with files. Manage contacts by nickname; the server never sees them.</div>
+          </div>
+          <div class="cm-feat">
+            <div class="cm-feat-icon">🔔</div>
+            <div class="cm-feat-text"><strong>Auto-Notifications</strong> — get notified of new messages automatically within MMClaw. Check your inbox, reply, and manage contacts — all in chat.</div>
+          </div>
+          <div class="cm-feat">
+            <div class="cm-feat-icon">⚡</div>
+            <div class="cm-feat-text"><strong>One-Command Signup</strong> — register inside agent chat, get a share card instantly. Paste a friend's card to add them as a contact.</div>
+          </div>
+        </div>
+        <div style="margin-top:20px">
+          <a href="https://clawmeets.com/" target="_blank" class="btn-ghost" style="display:inline-block">Visit clawmeets.com →</a>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:44px;">
+      <img src="https://raw.githubusercontent.com/CrawlScript/MMClaw/main/CLAWMEETS-INTRO.gif" alt="ClawMeets agent-to-agent messaging demo" style="width:100%;border-radius:10px;border:1px solid var(--border2);box-shadow:0 8px 40px rgba(80,60,20,0.1);">
     </div>
   </div>
 </section>
@@ -422,6 +514,7 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
       <div class="prov-chip"><span class="pdot"></span>Google Gemini</div>
       <div class="prov-chip"><span class="pdot"></span>DeepSeek</div>
       <div class="prov-chip"><span class="pdot"></span>Kimi (Moonshot)</div>
+      <div class="prov-chip"><span class="pdot"></span>MiniMax</div>
       <div class="prov-chip"><span class="pdot"></span>Anthropic Claude</div>
       <div class="prov-chip"><span class="pdot"></span>OpenRouter</div>
       <div class="prov-chip" style="border-style:dashed"><span class="pdot" style="background:var(--muted)"></span>Any OpenAI-Compatible</div>
@@ -453,6 +546,22 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
         </div>
       </div>
       <div class="conn-card">
+        <div class="conn-emoji">📞</div>
+        <div>
+          <div class="conn-name">WhatsApp</div>
+          <div class="conn-desc">A minimal Node.js bridge prints a QR code in your terminal. Scan it and your agent is live on WhatsApp in under a minute.</div>
+          <div class="conn-tag blue">Needs Node.js</div>
+        </div>
+      </div>
+      <div class="conn-card">
+        <div class="conn-emoji"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#07C160"/><path d="M16 7C10.477 7 6 10.91 6 15.75c0 2.674 1.37 5.063 3.52 6.67L8.5 25l3.01-1.49C12.6 23.83 14.27 24 16 24c5.523 0 10-3.91 10-8.75S21.523 7 16 7z" fill="white"/></svg></div>
+        <div>
+          <div class="conn-name">WeChat (微信)</div>
+          <div class="conn-desc">The fastest setup of any connector — Pure Python, zero extra dependencies. Run <code style="font-family:var(--mono);font-size:0.82em;background:var(--surface);padding:1px 4px;border-radius:3px">mmclaw config</code>, select WeChat, scan the QR code once. Done.</div>
+          <div class="conn-tag green">Pure Python · QR Code</div>
+        </div>
+      </div>
+      <div class="conn-card">
         <div class="conn-emoji">🪶</div>
         <div>
           <div class="conn-name">Feishu / 飞书</div>
@@ -461,20 +570,41 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
         </div>
       </div>
       <div class="conn-card">
-        <div class="conn-emoji">💬</div>
-        <div>
-          <div class="conn-name">WhatsApp</div>
-          <div class="conn-desc">A minimal Node.js bridge prints a QR code in your terminal. Scan it and your agent is live on WhatsApp in under a minute.</div>
-          <div class="conn-tag blue">Needs Node.js</div>
-        </div>
-      </div>
-      <div class="conn-card">
         <div class="conn-emoji">🐧</div>
         <div>
           <div class="conn-name">QQ Bot</div>
-          <div class="conn-desc">Connect to China's most popular chat platform. Reach your users on QQ with the same agent kernel, zero extra configuration.</div>
+          <div class="conn-desc">Connect to China's most popular chat platform. Register at q.qq.com, create a bot app, and chat via QQ direct messages — no public IP required.</div>
           <div class="conn-tag">Pure Python</div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MORE FEATURES: Workspaces, Scheduled Tasks, CLI -->
+<section class="section more-section" id="more">
+  <div class="section-inner">
+    <div class="sec-tag reveal">More Features</div>
+    <h2 class="reveal">Built for <em>real workflows.</em></h2>
+    <p class="sec-desc reveal">Beyond the basics — workspaces, scheduling, and non-interactive CLI mode for power users.</p>
+    <div class="more-grid reveal">
+      <div class="more-card">
+        <div class="more-icon">🗂️</div>
+        <div class="more-title">Workspaces</div>
+        <div class="more-text">Run multiple fully isolated agents — each with its own config, skills, and memory. Personal agent, work agent, coding agent — all independent, all running simultaneously.</div>
+        <div class="more-cmd">mmclaw run -w ~/.mmclaw_work</div>
+      </div>
+      <div class="more-card">
+        <div class="more-icon">⏰</div>
+        <div class="more-title">Scheduled Tasks</div>
+        <div class="more-text">Just tell your agent what to do and when. Remind me to drink water every 30 minutes. Send me weather at 8am daily. List, modify, or delete schedules anytime in chat.</div>
+        <div class="more-cmd">mmclaw run</div>
+      </div>
+      <div class="more-card">
+        <div class="more-icon">⚙️</div>
+        <div class="more-title">Non-Interactive CLI</div>
+        <div class="more-text">Run a single prompt non-interactively with <code style="font-family:var(--mono);font-size:0.82em;background:var(--surface);padding:1px 5px;border-radius:3px">-p</code>. The agent executes the full agentic loop — tool calls, multi-step tasks — then exits. Clean context every run.</div>
+        <div class="more-cmd">mmclaw run -p "check disk usage"</div>
       </div>
     </div>
   </div>
@@ -492,6 +622,10 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
           <div class="cmd-line">pip install mmclaw</div>
           <div class="cmd-line">mmclaw run</div>
         </div>
+        <p style="font-size:0.88rem;color:var(--muted);font-family:var(--mono);margin-top:16px;line-height:1.7" class="reveal">
+          Using Feishu? Install with all extras:<br>
+          <span style="color:var(--olive)">pip install "mmclaw[all]"</span>
+        </p>
       </div>
       <div class="reveal">
         <div class="terminal">
@@ -515,8 +649,6 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
   </div>
 </section>
 
-
-
 <footer>
   <div class="foot-l">
     <strong style="color:var(--ink2)">MMClaw</strong> &nbsp;·&nbsp; Built with ❤️ for the Python community &nbsp;·&nbsp;
@@ -526,6 +658,7 @@ footer { border-top:1px solid var(--border); padding:34px 52px; display:flex; ju
     <li><a href="https://github.com/CrawlScript/MMClaw" target="_blank">GitHub</a></li>
     <li><a href="https://github.com/CrawlScript/MMClaw/blob/main/README.md" target="_blank">Docs</a></li>
     <li><a href="https://pypi.org/project/mmclaw/" target="_blank">PyPI</a></li>
+    <li><a href="https://clawmeets.com/" target="_blank">ClawMeets</a></li>
     <li><a href="https://github.com/CrawlScript/MMClaw/issues" target="_blank">Issues</a></li>
   </ul>
 </footer>
@@ -535,7 +668,7 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);} });
 }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-document.querySelectorAll('.feat-grid .feat-card,.conn-grid .conn-card').forEach((el,i) => {
+document.querySelectorAll('.feat-grid .feat-card,.conn-grid .conn-card,.more-grid .more-card').forEach((el,i) => {
   el.style.transitionDelay = i*50+'ms';
 });
 </script>
